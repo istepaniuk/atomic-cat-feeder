@@ -10,9 +10,9 @@ OS = $(TOOLCHAIN)/bin/arm-none-eabi-size
 
 ASFLAGS += -mcpu=cortex-m3
 ASFLAGS += -mthumb
-ASFLAGS += -Wall 
-ASFLAGS += -c 
-ASFLAGS += -fmessage-length=0 
+ASFLAGS += -Wall
+ASFLAGS += -c
+ASFLAGS += -fmessage-length=0
 
 CFLAGS += -mcpu=cortex-m3
 CFLAGS += -mthumb
@@ -20,7 +20,7 @@ CFLAGS += -g
 CFLAGS += -O0
 CFLAGS += -Wall
 CFLAGS += -fmessage-length=0
-CFLAGS += -ffunction-sections 
+CFLAGS += -ffunction-sections
 CFLAGS += -fdata-sections
 CFLAGS += -std=c99
 
@@ -32,7 +32,7 @@ LFLAGS += -T$(LSCRIPT)
 DEFS += -DSTM32F10X_MD_VL
 DEFS += -DUSE_STDPERIPH_DRIVER
 
-CMSISSRC += ./lib/CMSIS/CM3/CoreSupport/core_cm3.c 
+CMSISSRC += ./lib/CMSIS/CM3/CoreSupport/core_cm3.c
 CMSISSRC += ./lib/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c
 
 STSRC += ./lib/STM32F10x_StdPeriph_Driver/src/misc.c
@@ -45,7 +45,7 @@ STSRC += ./lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_usart.c
 SRC += $(wildcard ./src/*.c)
 SRC += $(CMSISSRC)
 SRC += $(STSRC)
-		
+
 ASRC = ./lib/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/gcc/startup_stm32f10x_md_vl.S
 
 INCLUDE += -I./src
