@@ -2,7 +2,7 @@
 
 /usr/bin/arm-none-eabi-gdb << EOF
 target extended-remote :4242
-load blink-plain.elf
+load catfeeder.elf
 continue
 EOF
 

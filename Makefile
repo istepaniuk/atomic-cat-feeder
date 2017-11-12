@@ -1,4 +1,4 @@
-TARGET = blink-plain
+TARGET = catfeeder
 
 TOOLCHAIN = /usr
 AS = $(TOOLCHAIN)/bin/arm-none-eabi-as

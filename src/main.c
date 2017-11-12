@@ -22,7 +22,7 @@ int main(void)
     while(1)
     {
         GPIOC->ODR ^= GPIO_Pin_8;
-        delay(500000);
+        delay(50000);
     }
 }
 
