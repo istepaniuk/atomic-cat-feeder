@@ -1,6 +1,6 @@
 TARGET = blink-plain
 
-TOOLCHAIN = ../toolchain
+TOOLCHAIN = /usr
 AS = $(TOOLCHAIN)/bin/arm-none-eabi-as
 LD = $(TOOLCHAIN)/bin/arm-none-eabi-ld
 CC = $(TOOLCHAIN)/bin/arm-none-eabi-gcc

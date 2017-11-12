@@ -1,6 +1,6 @@
 #!/bin/bash
 
-../toolchain/bin/arm-none-eabi-gdb << EOF
+/usr/bin/arm-none-eabi-gdb << EOF
 target extended-remote :4242
 load blink-plain.elf
 continue
