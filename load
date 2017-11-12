@@ -1,6 +1,6 @@
 #!/bin/bash
 
-/usr/bin/arm-none-eabi-gdb << EOF
+/usr/bin/arm-none-eabi-gdb -quiet << EOF
 target extended-remote :4242
 load catfeeder.elf
 continue
