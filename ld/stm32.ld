@@ -70,7 +70,7 @@ SECTIONS
     _ebss = .;         /* Global symbol at bss end */
     __bss_end__ = _ebss;
   } >RAM
-	
+
   /* Check that there is enough RAM */
   ._user_heap_stack :
   {
