@@ -8,3 +8,8 @@
 
 # Backup files
 *.*~
+
+# testing CLion
+.idea
+CMakeLists.txt
+cmake-build-debug
