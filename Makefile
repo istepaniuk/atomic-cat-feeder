@@ -8,52 +8,92 @@ OC = $(TOOLCHAIN)/bin/arm-none-eabi-objcopy
 OD = $(TOOLCHAIN)/bin/arm-none-eabi-objdump
 OS = $(TOOLCHAIN)/bin/arm-none-eabi-size
 
-ASFLAGS += -mcpu=cortex-m3 
+ASFLAGS += -mcpu=cortex-m3
 ASFLAGS += -mthumb
+ASFLAGS += -Wall 
+ASFLAGS += -c 
+ASFLAGS += -fmessage-length=0 
 
-CFLAGS += -mcpu=cortex-m3 
-CFLAGS += -mthumb 
-CFLAGS += -g 
-CFLAGS += -O0 
-CFLAGS += -fno-common
-
-CFLAGS += -I./inc
-CFLAGS += -I./src
+CFLAGS += -mcpu=cortex-m3
+CFLAGS += -mthumb
+CFLAGS += -g
+CFLAGS += -O0
+CFLAGS += -Wall
+CFLAGS += -fmessage-length=0
+CFLAGS += -ffunction-sections 
+CFLAGS += -fdata-sections
+CFLAGS += -std=c99
 
 LSCRIPT = ./ld/stm32.ld
+#LFLAGS += -nostdlib
+#LFLAGS += -static
 LFLAGS += -T$(LSCRIPT)
 
-OBJS = inc/startup_stm32f10x_md_vl.o src/main.o inc/stm32f10x_rcc.o inc/stm32f10x_gpio.o
+DEFS += -DSTM32F10X_MD_VL
+DEFS += -DUSE_STDPERIPH_DRIVER
+
+CMSISSRC += ./lib/CMSIS/CM3/CoreSupport/core_cm3.c 
+CMSISSRC += ./lib/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c
+
+STSRC += ./lib/STM32F10x_StdPeriph_Driver/src/misc.c
+STSRC += ./lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_rcc.c
+STSRC += ./lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_gpio.c
+STSRC += ./lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_exti.c
+STSRC += ./lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_tim.c
+STSRC += ./lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_usart.c
+
+SRC += $(wildcard ./src/*.c)
+SRC += $(CMSISSRC)
+SRC += $(STSRC)
+		
+ASRC = ./lib/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/gcc/startup_stm32f10x_md_vl.S
+
+INCLUDE += -I./src
+INCLUDE += -I./lib/CMSIS/CM3/DeviceSupport/ST/STM32F10x
+INCLUDE += -I./lib/CMSIS/CM3/CoreSupport
+INCLUDE += -I./lib/STM32F10x_StdPeriph_Driver/inc
+INCLUDE += -I$(TOOLCHAIN)/arm-none-eabi/include
+INCLUDE += -I$(TOOLCHAIN)/lib/gcc/arm-none-eabi/4.8.1/include
+INCLUDE += -I$(TOOLCHAIN)/lib/gcc/arm-none-eabi/4.8.1/include-fixed
+
+OBJS = $(ASRC:.S=.o) $(SRC:.c=.o)
 
 all: $(TARGET).elf
 
 $(TARGET).elf: $(OBJS)
-	@echo
+	@echo	
 	@echo Linking: $@
 	$(LD) $(LFLAGS) -o $@ $^
-	$(OD) -h -S $(TARGET).elf  > $(TARGET).lst
-
-main.o: src/main.c
+	@echo
+	@echo Creating list file:
+	$(OD) -h -S $(TARGET).elf > $(TARGET).lst
+		
+flash: $(TARGET).elf size
+	@echo
+	@echo Creating .hex and .bin flash images:
+	$(OC) -O ihex $< $(TARGET)_firmware.hex
+	$(OC) -O binary $< $(TARGET)_firmware.bin
+	
+size: $(TARGET).elf
+	@echo
+	@echo == Object size ==
+	@$(OS) --format=berkeley $<
+	
+%.o: %.c
 	@echo
 	@echo Compiling: $<
-	$(CC) -c $(CFLAGS) -I. src/main.c -o src/main.o
+	$(CC) -c $(CFLAGS) $(DEFS) $(INCLUDE) -I. $< -o $@
 
-%.o: inc/%.c
-	@echo
-	@echo Compiling: $<
-	$(CC) -c $(CFLAGS) -I. $< -o inc/$@
-
-%.o: inc/%.S
+%.o: %.S
 	@echo
 	@echo Assembling: $<
-	$(AS) $(ASFLAGS) -o inc/$@ $< -alh=inc/$*.lst
+	$(CC) -x assembler-with-cpp -c $(ASFLAGS) $< -o $@	
 
-clean:
-	@echo
+clean: 
 	@echo Cleaning:
 	$(RM) $(OBJS)
-	$(RM) *.o 
-	$(RM) src/*.o
-	$(RM) inc/*.o
 	$(RM) *.elf
 	$(RM) *.lst
+	$(RM) *.map
+	$(RM) *.bin
+	$(RM) *.hex
