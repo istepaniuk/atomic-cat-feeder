@@ -1,6 +1,6 @@
-#include "stm32f10x_rcc.h"
-#include "stm32f10x_gpio.h"
-#include "platform.h" 
+#include "stm32f10x_conf.h"
+#include "platform.h"
+#include "hardware.h"
 
 void delay(unsigned long delay)
 {
@@ -11,17 +11,33 @@ int main(void)
 {
     // Enable GPIO clock
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
 
-    gpio_set_pin_mode(&GPIO_PIN_B5, GPIO_Mode_Out_PP);
-    gpio_set_pin_mode(&GPIO_PIN_C8, GPIO_Mode_Out_PP);
+    gpio_set_pin_mode(&INDEX_PIN, GPIO_MODE_IN_FLOATING);
+    gpio_set_pin_mode(&BUTTON_PIN, GPIO_MODE_IN_FLOATING);
+    gpio_set_pin_mode(&MOTOR_PIN, GPIO_MODE_OUT_PUSH_PULL);
+    gpio_set_pin_mode(&BLUE_LED_PIN, GPIO_MODE_OUT_PUSH_PULL);
+    gpio_set_pin_mode(&GREEN_LED_PIN, GPIO_MODE_OUT_PUSH_PULL);
+
 
     while(1)
     {
-        GPIOB->ODR ^= GPIO_Pin_5;
-        GPIOC->ODR ^= GPIO_Pin_8;
-        delay(1000000);
+        if(gpio_get_pin_state(&INDEX_PIN)){
+            gpio_set_pin_high(&MOTOR_PIN);
+            gpio_set_pin_high(&GREEN_LED_PIN);
+
+        } else {
+            if(gpio_get_pin_state(&BUTTON_PIN)) {
+                gpio_set_pin_high(&MOTOR_PIN);
+            } else {
+                gpio_set_pin_low(&MOTOR_PIN);
+            }
+            gpio_set_pin_low(&GREEN_LED_PIN);
+        }
+
+        //delay(5000);
     }
 }
 
