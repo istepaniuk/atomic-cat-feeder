@@ -61,24 +61,24 @@ OBJS = $(ASRC:.S=.o) $(SRC:.c=.o)
 all: $(TARGET).elf
 
 $(TARGET).elf: $(OBJS)
-	@echo	
+	@echo
 	@echo Linking: $@
 	$(LD) $(LFLAGS) -o $@ $^
 	@echo
 	@echo Creating list file:
 	$(OD) -h -S $(TARGET).elf > $(TARGET).lst
-		
+
 flash: $(TARGET).elf size
 	@echo
 	@echo Creating .hex and .bin flash images:
 	$(OC) -O ihex $< $(TARGET)_firmware.hex
 	$(OC) -O binary $< $(TARGET)_firmware.bin
-	
+
 size: $(TARGET).elf
 	@echo
 	@echo == Object size ==
 	@$(OS) --format=berkeley $<
-	
+
 %.o: %.c
 	@echo
 	@echo Compiling: $<
@@ -87,9 +87,9 @@ size: $(TARGET).elf
 %.o: %.S
 	@echo
 	@echo Assembling: $<
-	$(CC) -x assembler-with-cpp -c $(ASFLAGS) $< -o $@	
+	$(CC) -x assembler-with-cpp -c $(ASFLAGS) $< -o $@
 
-clean: 
+clean:
 	@echo Cleaning:
 	$(RM) $(OBJS)
 	$(RM) *.elf
