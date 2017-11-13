@@ -1,5 +1,6 @@
 # Object files
 *.o
+core
 
 # Executables
 *.elf
