@@ -4,7 +4,8 @@
 
 void delay(unsigned long delay)
 {
-    while(delay) delay--;
+    while (delay)
+	delay--;
 }
 
 int main(void)
@@ -44,4 +45,3 @@ int main(void)
         }
     }
 }
-

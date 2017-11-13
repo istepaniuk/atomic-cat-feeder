@@ -64,14 +64,14 @@
 #define GPIO_PIN_C15 (pin_def_t) { GPIOC, GPIO_Pin_15 }
 
 typedef struct pin_def_t {
-    GPIO_TypeDef* port;
+    GPIO_TypeDef *port;
     uint16_t number;
 } pin_def_t;
 
-void gpio_set_pin_mode(pin_def_t* pin, uint16_t mode);
-void gpio_set_interrupt_on_rising(pin_def_t* pin, void* callback);
-int gpio_get_pin_state(pin_def_t* pin);
-void gpio_set_pin_high(pin_def_t* pin);
-void gpio_set_pin_low(pin_def_t* pin);
+void gpio_set_pin_mode(pin_def_t * pin, uint16_t mode);
+void gpio_set_interrupt_on_rising(pin_def_t * pin, void *callback);
+int gpio_get_pin_state(pin_def_t * pin);
+void gpio_set_pin_high(pin_def_t * pin);
+void gpio_set_pin_low(pin_def_t * pin);
 
 #endif
