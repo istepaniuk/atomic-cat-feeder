@@ -4,7 +4,8 @@
 
 void delay(unsigned long delay)
 {
-    while(delay) delay--;
+    while (delay)
+	delay--;
 }
 
 int main(void)
@@ -22,22 +23,20 @@ int main(void)
     gpio_set_pin_mode(&GREEN_LED_PIN, GPIO_MODE_OUT_PUSH_PULL);
 
 
-    while(1)
-    {
-        if(gpio_get_pin_state(&INDEX_PIN)){
-            gpio_set_pin_high(&MOTOR_PIN);
-            gpio_set_pin_high(&GREEN_LED_PIN);
+    while (1) {
+	if (gpio_get_pin_state(&INDEX_PIN)) {
+	    gpio_set_pin_high(&MOTOR_PIN);
+	    gpio_set_pin_high(&GREEN_LED_PIN);
 
-        } else {
-            if(gpio_get_pin_state(&BUTTON_PIN)) {
-                gpio_set_pin_high(&MOTOR_PIN);
-            } else {
-                gpio_set_pin_low(&MOTOR_PIN);
-            }
-            gpio_set_pin_low(&GREEN_LED_PIN);
-        }
+	} else {
+	    if (gpio_get_pin_state(&BUTTON_PIN)) {
+		gpio_set_pin_high(&MOTOR_PIN);
+	    } else {
+		gpio_set_pin_low(&MOTOR_PIN);
+	    }
+	    gpio_set_pin_low(&GREEN_LED_PIN);
+	}
 
-        //delay(5000);
+	//delay(5000);
     }
 }
-
