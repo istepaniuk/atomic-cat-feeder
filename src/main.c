@@ -10,7 +10,7 @@ void start_motor();
 
 
 static const int ERROR_BLINK_TIME = 500;
-static const int MIN_RUN_TIME = 200;
+static const int MIN_RUN_TIME = 500;
 static const int MAX_RUN_TIME = 3000;
 static const int STALL_WAIT_TIME = 1000;
 static const int RETRY_RUN_TIME = 300;
