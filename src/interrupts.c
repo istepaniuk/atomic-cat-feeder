@@ -17,17 +17,17 @@ void set_exti_line_interrupt_callback(int line, void *callback)
 {
     switch (line) {
     case EXTI_Line0:
-	exti_line0_interrupt_callback = callback;
-	break;
+        exti_line0_interrupt_callback = callback;
+        break;
     case EXTI_Line10:
-	exti_line10_interrupt_callback = callback;
-	break;
+        exti_line10_interrupt_callback = callback;
+        break;
     case EXTI_Line11:
-	exti_line11_interrupt_callback = callback;
-	break;
+        exti_line11_interrupt_callback = callback;
+        break;
     case EXTI_Line12:
-	exti_line12_interrupt_callback = callback;
-	break;
+        exti_line12_interrupt_callback = callback;
+        break;
     }
 }
 
@@ -39,7 +39,7 @@ void set_timer2_interrupt_callback(void *callback)
 void EXTI0_IRQHandler(void)
 {
     if (EXTI_GetITStatus(EXTI_Line0) == RESET)
-	return;
+        return;
     exti_line0_interrupt_callback();
     EXTI_ClearITPendingBit(EXTI_Line0);
 }
@@ -47,18 +47,18 @@ void EXTI0_IRQHandler(void)
 void EXTI15_10_IRQHandler(void)
 {
     if (EXTI_GetITStatus(EXTI_Line10) != RESET)
-	exti_line10_interrupt_callback();
+        exti_line10_interrupt_callback();
     if (EXTI_GetITStatus(EXTI_Line11) != RESET)
-	exti_line11_interrupt_callback();
+        exti_line11_interrupt_callback();
     if (EXTI_GetITStatus(EXTI_Line12) != RESET)
-	exti_line12_interrupt_callback();
+        exti_line12_interrupt_callback();
     EXTI_ClearITPendingBit(EXTI_Lines15_10);
 }
 
 void TIM2_IRQHandler(void)
 {
     if (TIM_GetITStatus(TIM2, TIM_IT_Update) == RESET)
-	return;
+        return;
     timer2_interrupt_callback();
     TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
 }

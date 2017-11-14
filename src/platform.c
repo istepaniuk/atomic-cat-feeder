@@ -13,13 +13,13 @@ static void setup_interrupt_controller(uint16_t pin_number)
 {
     int exti_channel;
     if (pin_number == GPIO_Pin_0)
-	exti_channel = EXTI0_IRQn;
+        exti_channel = EXTI0_IRQn;
     if (pin_number == GPIO_Pin_10)
-	exti_channel = EXTI15_10_IRQn;
+        exti_channel = EXTI15_10_IRQn;
     if (pin_number == GPIO_Pin_11)
-	exti_channel = EXTI15_10_IRQn;
+        exti_channel = EXTI15_10_IRQn;
     if (pin_number == GPIO_Pin_12)
-	exti_channel = EXTI15_10_IRQn;
+        exti_channel = EXTI15_10_IRQn;
 
     NVIC_InitTypeDef NVIC_InitStructure;
     NVIC_InitStructure.NVIC_IRQChannel = exti_channel;
@@ -36,19 +36,19 @@ void gpio_set_interrupt_on_rising(pin_def_t * pin, void *callback)
     uint8_t pin_source;
     int i;
     for (i = 0; i < 15; i++) {
-	if (pins[i] == pin->number) {
-	    pin_source = i;
-	    exti_line = pin->number;
-	    break;
-	}
+        if (pins[i] == pin->number) {
+            pin_source = i;
+            exti_line = pin->number;
+            break;
+        }
     }
 
     if (pin->port == GPIOA)
-	port_source = GPIO_PortSourceGPIOA;
+        port_source = GPIO_PortSourceGPIOA;
     if (pin->port == GPIOB)
-	port_source = GPIO_PortSourceGPIOB;
+        port_source = GPIO_PortSourceGPIOB;
     if (pin->port == GPIOC)
-	port_source = GPIO_PortSourceGPIOC;
+        port_source = GPIO_PortSourceGPIOC;
 
     EXTI_InitTypeDef EXTI_InitStructure;
     EXTI_InitStructure.EXTI_Line = exti_line;
