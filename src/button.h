@@ -3,4 +3,4 @@
 
 void setup_button();
 
-#endif //CATFEEDER_BUTTON_H
+#endif

@@ -17,18 +17,19 @@ void turn_off_green_led()
     gpio_set_pin_low(&GREEN_LED_PIN);
 }
 
-void turn_on_green_led(){
+void turn_on_green_led()
+{
     gpio_set_pin_high(&GREEN_LED_PIN);
 }
 
 static int is_blue_led_on = false;
 
-void toggle_blue_led(){
+void toggle_blue_led()
+{
     is_blue_led_on = !is_blue_led_on;
-    if(is_blue_led_on){
+    if (is_blue_led_on) {
         gpio_set_pin_high(&BLUE_LED_PIN);
-    }
-    else {
+    } else {
         gpio_set_pin_low(&BLUE_LED_PIN);
     }
 }
