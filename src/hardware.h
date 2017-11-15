@@ -1,6 +1,8 @@
 #ifndef _HARDWARE_H
 #define _HARDWARE_H
+#include <stm32f10x.h>
 #include "platform.h"
+
 
 #define BLUE_LED_PIN GPIO_PIN_C8
 #define GREEN_LED_PIN GPIO_PIN_C9
@@ -12,5 +14,7 @@
 
 #define MOTOR_PIN GPIO_PIN_B5
 #define INDEX_PIN GPIO_PIN_B1
+
+void setup_gpio();
 
 #endif

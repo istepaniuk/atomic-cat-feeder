@@ -1,4 +1,4 @@
-#include "stm32f10x.h"
+#include <stm32f10x.h>
 #include "platform.h"
 #include "interrupts.h"
 

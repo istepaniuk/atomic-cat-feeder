@@ -1,6 +1,7 @@
 #ifndef _PLATFORM_H
 #define _PLATFORM_H
 
+#include <stm32f10x.h>
 #include <stdint.h>
 
 #define GPIO_MODE_IN_ANALOG      GPIO_Mode_AIN
