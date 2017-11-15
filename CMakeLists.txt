@@ -50,7 +50,7 @@ add_library(HAL
 add_library(CMSIS
         lib/CMSIS/CM3/CoreSupport/core_cm3.c
         lib/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c
-        lib/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/gcc/startup_stm32f10x_md_vl.s)
+        lib/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/gcc/startup_stm32f10x_md_vl.S)
 
 
 set(SOURCE_FILES
