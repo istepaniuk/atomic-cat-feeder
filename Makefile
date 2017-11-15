@@ -46,7 +46,7 @@ SRC += $(wildcard ./src/*.c)
 SRC += $(CMSISSRC)
 SRC += $(STSRC)
 
-ASRC = ./lib/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/gcc/startup_stm32f10x_md_vl.S
+ASRC = ./lib/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/gcc/startup_stm32f10x_md_vl.s
 
 INCLUDE += -I./src
 INCLUDE += -I./lib/CMSIS/CM3/DeviceSupport/ST/STM32F10x
