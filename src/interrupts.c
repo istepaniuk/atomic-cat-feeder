@@ -1,4 +1,4 @@
-#include "stm32f10x.h"
+#include <stm32f10x.h>
 #include "interrupts.h"
 
 #define EXTI_Lines15_10 EXTI_Line10 | EXTI_Line11 | EXTI_Line12 | EXTI_Line13 | EXTI_Line14 | EXTI_Line15

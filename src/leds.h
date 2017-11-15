@@ -6,4 +6,4 @@ void turn_off_green_led();
 void turn_on_green_led();
 void toggle_blue_led();
 
-#endif //CATFEEDER_LEDS_H
+#endif
