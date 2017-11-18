@@ -1,4 +1,3 @@
-#include "platform.h"
 #include "hardware.h"
 #include "motor.h"
 #include "leds.h"
@@ -35,7 +34,7 @@ int main(void)
         if (status == IDLE) {
             stall_count = 0;
             stop_motor();
-            if (gpio_get_pin_state(&BUTTON_PIN)) {
+            if (is_button_pressed()) {
                 status = RUNNING;
             }
         }
