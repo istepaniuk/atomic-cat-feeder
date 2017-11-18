@@ -64,6 +64,10 @@
 #define GPIO_PIN_C14 (pin_def_t) { GPIOC, GPIO_Pin_14 }
 #define GPIO_PIN_C15 (pin_def_t) { GPIOC, GPIO_Pin_15 }
 
+#define GPIO_PIN_D0  (pin_def_t) { GPIOD, GPIO_Pin_0  }
+#define GPIO_PIN_D1  (pin_def_t) { GPIOD, GPIO_Pin_1  }
+#define GPIO_PIN_D2  (pin_def_t) { GPIOD, GPIO_Pin_2  }
+
 typedef struct pin_def_t {
     GPIO_TypeDef *port;
     uint16_t number;

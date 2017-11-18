@@ -4,6 +4,8 @@
 #include "leds.h"
 #include "delay.h"
 #include "button.h"
+#include "usart.h"
+#include "dcf77.h"
 
 static const int ERROR_BLINK_TIME = 500;
 static const int MIN_RUN_TIME = 500;
@@ -24,6 +26,10 @@ int main(void)
     setup_motor();
     setup_button();
     setup_leds();
+    usart_init();
+    setup_dcf77();
+
+    usart_puts("Yay\n");
 
     while (1) {
         if (status == IDLE) {

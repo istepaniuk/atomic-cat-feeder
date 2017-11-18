@@ -61,7 +61,9 @@ set(SOURCE_FILES
         src/motor.c
         src/leds.c
         src/hardware.c
-        src/button.c)
+        src/button.c
+        src/usart.c
+        src/dcf77.c)
 
 add_executable(${PROJECT_NAME}.elf ${SOURCE_FILES})
 

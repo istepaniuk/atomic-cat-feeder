@@ -1,6 +1,6 @@
 #include "delay.h"
 
-static const int LOOPS_FOR_1_MS = 2500;
+static const int LOOPS_FOR_1_MS = 2450;
 
 void delay_ms(unsigned long delay)
 {
