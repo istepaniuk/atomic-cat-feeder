@@ -63,7 +63,8 @@ set(SOURCE_FILES
         src/hardware.c
         src/button.c
         src/usart.c
-        src/dcf77.c)
+        src/dcf77.c
+        src/timer.c)
 
 add_executable(${PROJECT_NAME}.elf ${SOURCE_FILES})
 

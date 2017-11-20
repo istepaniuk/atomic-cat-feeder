@@ -8,7 +8,7 @@ _Min_Stack_Size = 0x80;  /* required amount of stack */
 MEMORY
 {
   FLASH (rx)      : ORIGIN = 0x08000000, LENGTH = 128K
-  RAM (xrw)       : ORIGIN = 0x20000000, LENGTH = 8K
+  RAM (rwx)       : ORIGIN = 0x20000000, LENGTH = 8K
   MEMORY_B1 (rx)  : ORIGIN = 0x60000000, LENGTH = 0K
 }
 
@@ -20,7 +20,7 @@ SECTIONS
     . = ALIGN(4);
     KEEP(*(.isr_vector)) /* Startup code */
     . = ALIGN(4);
-  } >FLASH
+  } > FLASH
 
   /* Program code */
   .text :
@@ -39,7 +39,7 @@ SECTIONS
 
     . = ALIGN(4);
     _etext = .;        /* global symbols at end   */
-  } >FLASH
+  } > FLASH
 
   /* Used by startup code */
   _sidata = .;
@@ -54,7 +54,7 @@ SECTIONS
 
     . = ALIGN(4);
     _edata = .;        /* Global symbol at data end   */
-  } >RAM
+  } > RAM
 
   /* Uninitialized data */
   . = ALIGN(4);
@@ -69,7 +69,7 @@ SECTIONS
     . = ALIGN(4);
     _ebss = .;         /* Global symbol at bss end */
     __bss_end__ = _ebss;
-  } >RAM
+  } > RAM
 
   /* Check that there is enough RAM */
   ._user_heap_stack :
@@ -78,5 +78,5 @@ SECTIONS
     . = . + _Min_Heap_Size;
     . = . + _Min_Stack_Size;
     . = ALIGN(4);
-  } >RAM
+  } > RAM
 }
