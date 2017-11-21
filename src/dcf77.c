@@ -6,75 +6,69 @@
 #include "timer.h"
 #include "interrupts.h"
 
-
+static const int SAMPLES_PER_SECOND = 1000;
 static bool minute_mark_detected;
-static int its1 = 0;
+static int acquired_bits;
+static int ticks;
 
 static void acquire_sample_for_demodulation()
 {
-    bool signal = gpio_get_pin_state(&DCF77_IN_PIN);
-    int ticks = tim2_get_timer_value();
-    int samples_1;
+    static int samples_high_in_1_region_count = 0;
+    bool signal = !gpio_get_pin_state(&DCF77_IN_PIN);
 
-    if(ticks == 0){
-        if(samples_1 > 50){
+    if(ticks > 10 && ticks < 90) {
+        gpio_set_pin_high(&BLUE_LED_PIN);
+    }else{
+        gpio_set_pin_low(&BLUE_LED_PIN);
+    }
+
+    if(ticks > 110 && ticks < 190) {
+        gpio_set_pin_high(&BLUE_LED_PIN);
+        if(signal)
+            samples_high_in_1_region_count++;
+    }else{
+        gpio_set_pin_low(&BLUE_LED_PIN);
+    }
+
+    if(signal){
+        gpio_set_pin_high(&GREEN_LED_PIN);
+    }
+    else {
+        gpio_set_pin_low(&GREEN_LED_PIN);
+    }
+
+    ticks++;
+
+    if(ticks > SAMPLES_PER_SECOND){
+        if(samples_high_in_1_region_count > 50){
             usart_putc('1');
         } else {
             usart_putc('0');
         }
-
-        samples_1 = 0;
-    }
-
-    if(signal){
-        if(ticks > 110 && ticks < 190){
-            samples_1++;
-        }
+        ticks = 0;
+        acquired_bits++;
+        samples_high_in_1_region_count = 0;
     }
 }
 
 static void acquire_sample_for_minute_mark()
 {
-    static unsigned int signal_high_samples = 0;
-    bool signal = gpio_get_pin_state(&DCF77_IN_PIN);
+    static unsigned int samples_high_count = 0;
+    bool signal = !gpio_get_pin_state(&DCF77_IN_PIN);
 
     if(signal){
-        signal_high_samples++;
+        samples_high_count++;
+        gpio_set_pin_high(&BLUE_LED_PIN);
     }
     else {
-        signal_high_counter = 0
+        samples_high_count = 0;
+        gpio_set_pin_low(&BLUE_LED_PIN);
     }
 
-    if(signal_high_counter > 990){
+    if(samples_high_count > 1000){
         minute_mark_detected = true;
         timer2_stop();
     }
-}
-
-void setup_dcf77()
-{
-    gpio_set_pin_mode(&DCF77_IN_PIN, GPIO_MODE_IN_FLOATING);
-    gpio_set_pin_mode(&DCF77_POWER_PIN, GPIO_MODE_OUT_PUSH_PULL);
-    gpio_set_pin_high(&DCF77_POWER_PIN);
-
-    //F = CLK/((PSC + 1)*(ARR + 1))
-    timer2_init(1000-1, 24-1);
-    timer2_stop();
-
-    dcf77_acquire();
-}
-
-void dcf77_acquire()
-{
-    bool signal = 0;
-    int previous_reading = 0;
-    int signal_high_time = 0;
-
-
-    wait_for_minute_mark();
-
-    set_timer2_interrupt_callback(acquire_sample_for_demodulation);
-    timer2_start();
 }
 
 static void wait_for_minute_mark()
@@ -84,9 +78,45 @@ static void wait_for_minute_mark()
 
     minute_mark_detected = false;
     set_timer2_interrupt_callback(acquire_sample_for_minute_mark);
+    timer2_start();
 
     while (!minute_mark_detected) {
     }
 
     gpio_set_pin_low(&GREEN_LED_PIN);
+}
+
+static void dcf77_start_acquire()
+{
+    wait_for_minute_mark();
+
+    acquired_bits = 0;
+    ticks = 0;
+    set_timer2_interrupt_callback(acquire_sample_for_demodulation);
+    timer2_start();
+
+    usart_putc('>');
+
+    while(acquired_bits < 58){
+    }
+
+    timer2_stop();
+    usart_puts("<\n");
+}
+
+
+void setup_dcf77()
+{
+    gpio_set_pin_mode(&DCF77_IN_PIN, GPIO_MODE_IN_FLOATING);
+    gpio_set_pin_mode(&DCF77_POWER_PIN, GPIO_MODE_OUT_PUSH_PULL);
+    gpio_set_pin_high(&DCF77_POWER_PIN);
+
+    //F = CLK/((PSC + 1)*(ARR + 1))
+    //24MHz CLK/(1000-1)*(24-1) = 1 KHz ISR
+    timer2_init(1000-1, 24-1);
+    timer2_stop();
+
+    while(1) {
+        dcf77_start_acquire();
+    }
 }

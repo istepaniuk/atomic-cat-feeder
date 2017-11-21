@@ -3,6 +3,8 @@
 
 #include <stm32f10x.h>
 #include <stdint.h>
+#include <stdbool.h>
+
 
 #define GPIO_MODE_IN_ANALOG      GPIO_Mode_AIN
 #define GPIO_MODE_IN_FLOATING    GPIO_Mode_IN_FLOATING
@@ -73,9 +75,9 @@ typedef struct pin_def_t {
     uint16_t number;
 } pin_def_t;
 
-void gpio_set_pin_mode(pin_def_t * pin, uint16_t mode);
+void gpio_set_pin_mode(pin_def_t * pin, GPIOMode_TypeDef mode);
 void gpio_set_interrupt_on_rising(pin_def_t * pin, void *callback);
-int gpio_get_pin_state(pin_def_t * pin);
+bool gpio_get_pin_state(pin_def_t * pin);
 void gpio_set_pin_high(pin_def_t * pin);
 void gpio_set_pin_low(pin_def_t * pin);
 

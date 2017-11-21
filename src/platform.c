@@ -1,4 +1,5 @@
 #include <stm32f10x.h>
+#include <stdbool.h>
 #include "platform.h"
 #include "interrupts.h"
 
@@ -63,7 +64,7 @@ void gpio_set_interrupt_on_rising(pin_def_t * pin, void *callback)
     set_exti_line_interrupt_callback(exti_line, callback);
 }
 
-void gpio_set_pin_mode(pin_def_t * pin, uint16_t mode)
+void gpio_set_pin_mode(pin_def_t * pin, GPIOMode_TypeDef mode)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.GPIO_Pin = pin->number;
@@ -72,7 +73,7 @@ void gpio_set_pin_mode(pin_def_t * pin, uint16_t mode)
     GPIO_Init(pin->port, &GPIO_InitStructure);
 }
 
-inline int gpio_get_pin_state(pin_def_t * pin)
+inline bool gpio_get_pin_state(pin_def_t * pin)
 {
     return GPIO_ReadInputDataBit(pin->port, pin->number);
 }
